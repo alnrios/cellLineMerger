@@ -80,7 +80,7 @@ class ExcelWkbk:
     def get_num_of_sheets(self):
         return len(self.sheets)
 
-    def print_sheet_info(self):
+    def display_sheet_info(self):
         print(str(self.get_num_of_sheets()) + " sheets in " + self.technician + "'s workbook")
         print('*' * 35)
         for i in range(len(self.sheets)):
@@ -92,6 +92,8 @@ class ExcelSheet:
         self.date = date
         self.num_of_drugs = num_of_drugs
         self.drug_list = []
+        self.day1_list = []
+        self.day7_list = []
 
     def display_info(self):
         print(str(self.num_of_drugs) + " drugs used on " + self.date)
@@ -105,16 +107,27 @@ class ExcelSheet:
         self.drug_list.append(drug)
 
 
-class ControlPlate:
-    def __init__(self, num_of_cell_lines, cell_line_names):
-        if num_of_cell_lines != len(cell_line_names):
-            print("The amount of cell lines listed "
-                  "does not match the amount given\n"
-                  "Try again\n")
-        else:
-            self.num_of_cell_lines = num_of_cell_lines
-            self.cell_line_names = cell_line_names
-            print("Success!\n")
+class Plate:
+    def __init__(self, barcode):
+        self.barcode = barcode
+        self.num_of_cell_lines = 0
+        self.cell_line_list = []
+
+    def append_cell_lines(self, cell_line):
+        self.cell_line_list.append(cell_line)
+
+
+class ControlPlate(Plate):
+    def __init__(self, control_type):
+        super().__init__("ControlPlate")
+        self.control_type = control_type
+
+
+class TreatmentPlate(Plate):
+    def __init__(self):
+        super().__init__("TreatmentPlate")
+        self.day1_link = ""
+        self.day7_link = ""
 
 
 class Drug:
