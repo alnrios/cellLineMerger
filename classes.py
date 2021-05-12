@@ -50,7 +50,7 @@ class ExcelWkbk:
         for i in range(len(self.sheets)):
             self.sheets[i].display_info()
 
-
+# need to add more attributes including barcodes (control and treatment), drug names, etc.
 class ExcelSheet:
     def __init__(self, date, num_of_drugs):
         self.date = date
