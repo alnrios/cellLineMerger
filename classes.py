@@ -50,8 +50,6 @@ def inc_by_row(cell_name, quantity):
     return cell_name[0] + str(int(cell_name[1:]) + quantity)
 
 
-# def insert_and_pop(my_list, )
-
 def string_extract(cell, split_char):
     cell_string = cell.value
     if split_char in cell_string:
@@ -79,8 +77,8 @@ def get_control_cell_lines(wkst, barcode_cell, count):
         barcode_cell = inc_by_column(barcode_cell, 1)
         count += 1
         cell_line = cell_scan(wkst, barcode_cell, count, 'cell return cell')
-        if cell_line is not None:
-            cell_line_list.append(CellLine(cell_line.value, pos))
+        if cell_line is not None and 'Cell Line' not in str(cell_line.value):
+            cell_line_list.append(CellLine(str(cell_line.value), pos))
         else:
             break
     return cell_line_list
@@ -149,6 +147,7 @@ class ExcelWkbk:
                         ControlPlate(barcode, len(cell_line_list), cell_line_list, 'd7'))
 
     def display_sheet_info(self):
+        print('*' * 35)
         print(str(self.get_num_of_sheets()) + " sheets in " + self.technician + "'s workbook")
         print('*' * 35)
         for i in range(len(self.sheets)):
@@ -172,10 +171,10 @@ class ExcelWkbk:
                         while True:
                             cleaned_cell = inc_by_column(cleaned_cell, 1)
                             position_cell = inc_by_row(cleaned_cell, count - 1)
-                            if wkst[cleaned_cell].value is None or 'Cell Line' in wkst[cleaned_cell].value:
+                            if wkst[cleaned_cell].value is None or 'Cell Line' in str(wkst[cleaned_cell].value):
                                 break
                             else:
-                                cell_lines.append(CellLine(wkst[cleaned_cell].value, wkst[position_cell].value))
+                                cell_lines.append(CellLine(str(wkst[cleaned_cell].value), wkst[position_cell].value))
                         for listed_drug in self.sheets[sheet_index].drug_list:
                             if drug == listed_drug.name:
                                 drug = listed_drug
@@ -247,15 +246,15 @@ class ControlPlate(Plate):
         return str(self.num_of_cell_lines) + " cell lines in " + self.control_type + " plate - " + \
                self.barcode + ": " + self.display_cell_lines()
 
-    # def display_cell_lines(self):
-    #     return_string = "["
-    #     for i in range(self.num_of_cell_lines):
-    #         if i == self.num_of_cell_lines - 1:
-    #             return_string += (self.cell_line_list[i].name + ": " + str(self.cell_line_list[i].position))
-    #         else:
-    #             return_string += (self.cell_line_list[i].name + ": " + str(self.cell_line_list[i].position) + ", ")
-    #     return_string += "]"
-    #     return return_string
+    def display_cell_lines(self):
+        return_string = "["
+        for i in range(self.num_of_cell_lines):
+            if i == self.num_of_cell_lines - 1:
+                return_string += (self.cell_line_list[i].name + ": " + str(self.cell_line_list[i].position))
+            else:
+                return_string += (self.cell_line_list[i].name + ": " + str(self.cell_line_list[i].position) + ", ")
+        return_string += "]"
+        return return_string
 
 
 class TreatmentPlate(Plate):
