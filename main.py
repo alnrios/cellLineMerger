@@ -20,7 +20,9 @@ def create_excel_file():
     sheet['J1'].value = 'Day1Location'
     sheet['K1'].value = 'Day7Barcode'
     sheet['L1'].value = 'Day7Location'
-    master_wkbk.save('master.xlsx')
+    master_sheet_name = input("Enter name of master sheet (DO NOT INCLUDE FILE EXTENSION): ")
+    master_wkbk.save('{}.xlsx'.format(master_sheet_name))
+    return master_sheet_name
 
 
 def add_to_master(master_file, excelwkbk, row):
@@ -70,16 +72,17 @@ def add_to_master(master_file, excelwkbk, row):
                         else:
                             write_sheet.cell(column=col, row=row, value='NA')
                 except AttributeError:
+                    os.remove('{}.xlsx'.format(master))
                     raise AttributeError("Something is wrong with the cell lines input in this workbook: "
                                          + excelwkbk.technician + " - " + sheet.date + " - " +
                                          sheet.treatment_list[x].cell_line_list[cell_line].name +
                                          "\nFix the mentioned spreadsheet before continuing...")
                 row += 1
-    master_wb.save('master.xlsx')
+    master_wb.save('{}.xlsx'.format(master))
     return row
 
 
-create_excel_file()
+master = create_excel_file()
 row = 2
 for i in range(len(directory)):
     wb = openpyxl.load_workbook('spreadsheets/{}'.format(directory[i]), data_only=True)
@@ -87,5 +90,5 @@ for i in range(len(directory)):
     new_wb.get_worksheets()
     new_wb.display_sheet_info()
     print("\nWriting to master file...\n")
-    row = add_to_master('master.xlsx', new_wb, row)
+    row = add_to_master('{}.xlsx'.format(master), new_wb, row)
 print("\nScript finished successfully!")
