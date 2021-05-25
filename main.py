@@ -91,4 +91,4 @@ for i in range(len(directory)):
     new_wb.display_sheet_info()
     print("\nWriting to master file...\n")
     row = add_to_master('{}.xlsx'.format(master), new_wb, row)
-print("\nScript finished successfully!")
+print("Script finished successfully!")

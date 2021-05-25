@@ -171,7 +171,7 @@ class ExcelWkbk:
                         while True:
                             cleaned_cell = inc_by_column(cleaned_cell, 1)
                             position_cell = inc_by_row(cleaned_cell, count - 1)
-                            if wkst[cleaned_cell].value is None or 'Cell Line' in str(wkst[cleaned_cell].value):
+                            if wkst[cleaned_cell].value is None or 'Cell' in str(wkst[cleaned_cell].value):
                                 break
                             else:
                                 cell_lines.append(CellLine(str(wkst[cleaned_cell].value), wkst[position_cell].value))
