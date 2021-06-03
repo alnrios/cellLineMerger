@@ -20,7 +20,8 @@ def create_excel_file():
     sheet['J1'].value = 'Day1Location'
     sheet['K1'].value = 'Day7Barcode'
     sheet['L1'].value = 'Day7Location'
-    master_sheet_name = input("Enter name of master sheet (DO NOT INCLUDE FILE EXTENSION): ")
+    master_sheet_name = 'CellLineMaster, ' + input(
+                                            "Enter name of master sheet drugs & date (DO NOT INCLUDE FILE EXTENSION): ")
     master_wkbk.save('{}.xlsx'.format(master_sheet_name))
     return master_sheet_name
 
