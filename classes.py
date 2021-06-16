@@ -72,15 +72,13 @@ def drug_check(wkst, col_number):
 def get_control_cell_lines(wkst, barcode_cell, count):
     cell_line_list = []
     pos = 0  # records the position of the cell line
-    while True:
+    for i in range(8):
         pos += 1
         barcode_cell = inc_by_column(barcode_cell, 1)
         count += 1
         cell_line = cell_scan(wkst, barcode_cell, count, 'cell return cell')
         if cell_line is not None and 'Cell Line' not in str(cell_line.value):
             cell_line_list.append(CellLine(str(cell_line.value), pos))
-        else:
-            break
     return cell_line_list
 
 
@@ -168,12 +166,10 @@ class ExcelWkbk:
                     if wkst[cleaned_cell].value is not None and 'Treatment' not in wkst[cleaned_cell].value:
                         barcode = wkst[cleaned_cell].value
                         cell_lines = []
-                        while True:
+                        for k in range(4):
                             cleaned_cell = inc_by_column(cleaned_cell, 1)
                             position_cell = inc_by_row(cleaned_cell, count - 1)
-                            if wkst[cleaned_cell].value is None or 'Cell' in str(wkst[cleaned_cell].value):
-                                break
-                            else:
+                            if wkst[cleaned_cell].value is not None and 'Cell' not in str(wkst[cleaned_cell].value):
                                 cell_lines.append(CellLine(str(wkst[cleaned_cell].value), wkst[position_cell].value))
                         for listed_drug in self.sheets[sheet_index].drug_list:
                             if drug == listed_drug.name:
